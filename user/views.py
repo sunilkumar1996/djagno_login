@@ -3,8 +3,21 @@ from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
-from user.forms import RegisterForm
+from user.forms import RegisterForm, UserForgotPasswordForm
 
+class ForgotPassword(View):
+    def get(self, request):
+        return render(request, "auth/change_password.html")
+
+    def post(self, request):
+        form = UserForgotPasswordForm(data=request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            """
+            Here the write code of send mail this code is workign progess
+            """
+            messages.success(request, f"Mail sent, Please check your email: {email}")
+            return redirect("login")
 
 class UserLogoutView(View):
     def get(self, request):
